@@ -28,6 +28,7 @@ ingress:
   className: nginx
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
   hosts:
     - host: patchmon-dev.example.com
       paths:
