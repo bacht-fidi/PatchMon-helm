@@ -206,8 +206,8 @@ backend:
   image:
     registry: "ghcr.io"
     repository: patchmon/patchmon-backend
-    tag: 1.4.0
-    pullPolicy: Always
+    tag: 1.4.1
+    pullPolicy: IfNotPresent
   
   # Deployment configuration
   replicaCount: 1 # More than 1 requires a shared file storage for agent files (RWX)
@@ -259,7 +259,8 @@ backend:
     # Redis configuration
     redisDb: "0"
     # Security
-    trustProxy: false
+    # Trust proxy headers from ingress controller and internal cluster networks
+    trustProxy: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
     enableHsts: false
     # User management
     defaultUserRole: "user"
@@ -378,7 +379,7 @@ frontend:
   image:
     registry: "ghcr.io"
     repository: patchmon/patchmon-frontend
-    tag: 1.4.0
+    tag: 1.4.1
     pullPolicy: IfNotPresent
   
   # Deployment configuration
@@ -469,6 +470,7 @@ ingress:
   className: ""
   annotations:
     # cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
   hosts:
     - host: patchmon.example.com
       paths:
