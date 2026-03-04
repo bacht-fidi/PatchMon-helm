@@ -282,7 +282,7 @@ backend:
     clientSecret: ""
     existingSecret: ""
     existingSecretClientSecretKey: "oidc-client-secret"
-    scopes: "openid profile email"
+    scopes: "openid profile email offline_access groups"
     buttonText: "Login with SSO"
     autoCreateUsers: true
     defaultRole: "user"
