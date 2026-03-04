@@ -9,6 +9,7 @@ jobs:
   release:
     permissions:
       contents: write
+      pages: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -21,7 +22,46 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.6.0
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Package Helm chart
+        run: |
+          mkdir -p .cr-release-packages
+          helm package . --destination .cr-release-packages
+
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+          fetch-depth: 0
+        continue-on-error: true
+
+      - name: Create gh-pages branch if it doesn't exist
+        run: |
+          if [ ! -d "gh-pages/.git" ]; then
+            mkdir -p gh-pages
+            cd gh-pages
+            git init
+            git checkout -b gh-pages
+            git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          fi
+
+      - name: Update Helm repo index
+        run: |
+          if [ -f gh-pages/index.yaml ]; then
+            helm repo index .cr-release-packages --url https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }} --merge gh-pages/index.yaml
+          else
+            helm repo index .cr-release-packages --url https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+          fi
+          cp .cr-release-packages/*.tgz gh-pages/
+          cp .cr-release-packages/index.yaml gh-pages/
+
+      - name: Push to gh-pages
+        run: |
+          cd gh-pages
+          git add .
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+          git commit -m "Update Helm chart to $(grep '^version:' ../Chart.yaml | awk '{print $2}')"
+          git push origin gh-pages
