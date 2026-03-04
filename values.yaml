@@ -278,6 +278,7 @@ backend:
   oidc:
     enabled: false
     issuerUrl: ""
+    redirectUri: ""
     clientId: ""
     clientSecret: ""
     existingSecret: ""
