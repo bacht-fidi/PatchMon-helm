@@ -3,10 +3,10 @@ entries:
   patchmon:
   - apiVersion: v2
     appVersion: v1.4.2
-    created: "2026-03-11T15:57:04.472545184Z"
+    created: "2026-03-11T16:00:59.162669377Z"
     description: A Helm chart for PatchMon - Linux Patch Monitoring and Management
       System
-    digest: df31be45b556a2a59a4a45290cd6ddd5786455d45db853c05ca6afdb2c99d44d
+    digest: 0e33de87baf185624381848ccb0c6dd069c92e9152cbc7d1c805516c0cc108f3
     home: https://github.com/patchmon/patchmon
     icon: https://raw.githubusercontent.com/patchmon/patchmon/main/docs/logo.png
     keywords:
@@ -24,4 +24,4 @@ entries:
     urls:
     - https://bacht-fidi.github.io/PatchMon-helm/patchmon-1.3.0.tgz
     version: 1.3.0
-generated: "2026-03-11T15:57:04.470712969Z"
+generated: "2026-03-11T16:00:59.159936171Z"
