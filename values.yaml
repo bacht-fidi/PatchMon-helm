@@ -37,6 +37,9 @@ database:
   auth:
     database: patchmon_db
     username: patchmon_user
+    customHost: ""
+    customPort: ""
+    ssl: true
     password: ""
     existingSecret: ""
     existingSecretPasswordKey: "postgres-password"
