@@ -106,10 +106,10 @@ spec:
                   name: {{ include "patchmon.database.secretName" . }}
                   key: {{ .Values.database.auth.existingSecretPasswordKey }}
             - name: DATABASE_URL
-            {{- if .Values.database.enabled.false }}
-              value: "postgresql://{{ .Values.database.auth.username }}:$(POSTGRES_PASSWORD)@{{.Values.database.auth.customHost}}:{{ .Values.database.auth.customPort }}/{{ .Values.database.auth.database }}?sslmode={{ .Values.database.auth.ssl | ternary "require" "disable" }}"
-            {{- else }}
+            {{- if .Values.database.enabled }}
               value: "postgresql://{{ .Values.database.auth.username }}:$(POSTGRES_PASSWORD)@{{ include "patchmon.fullname" . }}-database:{{ .Values.database.service.port }}/{{ .Values.database.auth.database }}"
+            {{- else }}
+              value: "postgresql://{{ .Values.database.auth.username }}:$(POSTGRES_PASSWORD)@{{.Values.database.auth.customHost}}:{{ .Values.database.auth.customPort }}/{{ .Values.database.auth.database }}?sslmode={{ .Values.database.auth.ssl | ternary "require" "disable" }}"
             {{- end }}
             - name: JWT_SECRETß
               valueFrom:
