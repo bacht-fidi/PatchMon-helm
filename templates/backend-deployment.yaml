@@ -107,7 +107,7 @@ spec:
                   key: {{ .Values.database.auth.existingSecretPasswordKey }}
             - name: DATABASE_URL
             {{- if .Values.database.enabled.false }}
-              value: "postgresql://{{ .Values.database.auth.username }}:$(POSTGRES_PASSWORD)@{{.Values.database.auth.customHost}}:{{ .Values.database.auth.customPort }}/{{ .Values.database.auth.database }}?{{.Values.database.auth.ssl | ternary "sslmode=require" "sslmode=disable" }}"
+              value: "postgresql://{{ .Values.database.auth.username }}:$(POSTGRES_PASSWORD)@{{.Values.database.auth.customHost}}:{{ .Values.database.auth.customPort }}/{{ .Values.database.auth.database }}?sslmode={{ .Values.database.auth.ssl | ternary "require" "disable" }}"
             {{- else }}
               value: "postgresql://{{ .Values.database.auth.username }}:$(POSTGRES_PASSWORD)@{{ include "patchmon.fullname" . }}-database:{{ .Values.database.service.port }}/{{ .Values.database.auth.database }}"
             {{- end }}
