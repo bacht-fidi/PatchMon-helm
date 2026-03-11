@@ -111,7 +111,7 @@ spec:
             {{- else }}
               value: "postgresql://{{ .Values.database.auth.username }}:$(POSTGRES_PASSWORD)@{{ .Values.database.auth.customHost}}:{{ .Values.database.auth.customPort }}/{{ .Values.database.auth.database }}?sslmode={{ .Values.database.auth.ssl | ternary "require" "disable" }}"
             {{- end }}
-            - name: JWT_SECRETß
+            - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "patchmon.backend.secretName" . }}
